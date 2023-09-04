@@ -1,16 +1,11 @@
 
-// FETCH FETCH FETCH FETCH FETCH FETCH FETCH FETCH FETCH FETCH FETCH FETCH FETCH
+// SENDING DATA TO SERVER ON DJANGO
+// TAKE ELEMENT
+const myForm = document.getElementById('comment-form');
 
-let form = document.querySelector("#comment-form")
-form.onsubmit = async function (event) {
-  console.log("DOWNLOAD FILE WORKING")
-  event.preventDefault();
-
-
-  var datatobeckend = {name: "Roman"} // Готовим данные на отправку
-
-  
-
+// TAKE CSRF FUNC
+myForm.addEventListener('submit', function (e) {
+  e.preventDefault();
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -26,17 +21,47 @@ form.onsubmit = async function (event) {
     return cookieValue;
   }
 
+  // GET CSRF-TOKEN
+  var csrftoken = getCookie('csrftoken');
+  
+  // ADD DATA
+  const formData = new FormData(this);
+  formData.append("name", "Roman") // THIS EQU {"name" : "Roman"}
 
-  // отправка запроса на сервер
-  var response = await fetch('http://127.0.0.1:8000/download/', {
-    method: 'POST',
-    headers:{'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken'), 'X-Requested-With': 'XMLHttpRequest'},
-    body: JSON.stringify(datatobeckend)
+  // TAKE URL FROM ACTION
+  var url = e.target.action;
+
+  // ADD CORS
+  var options = {
+    method: 'post',
+    headers: {'X-CSRFToken': csrftoken},
+    mode: 'same-origin',
+    body: formData
+  };
+
+  // ADD FETCH
+  fetch(url, options).then((response) => {
+    return response.text();
+  }).then((text) => {
+    console.log(text);
   })
-  return await response;
+});
+  
+  
 
-}
+  
+  
 
+//   
+//   console.log("working")
+// })
+//   // отправка запроса на сервер
+//   var response = await fetch('http://127.0.0.1:8000/download/', {
+    
+//   })
+//   return response;
+// });
+// ==============================================================
 //let name_token = "anyfilename"
 //name_token = generateUUID()
 

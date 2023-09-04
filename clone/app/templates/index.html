@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="div">
+  <div class="div" id="form-wrapper">
     <div class="container col text-center">
-      <form id="comment-form" action="{% url 'downloadfile' %}" method="POST">{% csrf_token %}
+      <form id="comment-form" enctype="multipart/form-data" action="{% url 'downloadfile' %}" method="POST">{% csrf_token %}
         <button type="submit" class="btn btn-lg btn-success">Download file</button>
       </form >
     </div>
