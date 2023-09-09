@@ -39,3 +39,13 @@ def download(request):
     #     return response
     # else:
     #     return HttpResponseNotFound(f"Файл отсутствует!!!")
+
+
+# 100% рабочая схема скачивания файла только надо не забыть создать файл
+# def download(request):
+#     path_and_filname = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + f"\\static\\pic\\data.txt"
+#     if os.path.exists(path_and_filname):
+#         img = open(path_and_filname, 'rb')
+#         response = FileResponse(img)
+#         response['Content-Disposition'] = "Attachment;filename=data.txt" # % os.path.basename(path_and_filname)
+#         return response
