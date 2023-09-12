@@ -14,22 +14,32 @@ def homepage(request):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AddFile(View):
+    """
+    Возьмите во внимание что вернуть ответ в виде файла из POST запроса, в этом же классе не получится,
+    необходимо создавать новый контроллер
 
+    """
     def post(self, request):
-        data = json.loads(request.body.decode('utf-8'))
-        print(data)
 
-        # сохраняю данные в xml-файл по заданному пути
+        # take json data from post query...
+        data = json.loads(request.body.decode('utf-8'))
+
+        request.session['curentfilenamekey'] = str(data['curentfilename'])
+
+        # save data to xml file
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + f"\\static\\pic\\"
-        with open(os.path.join(path, "data.xml"), 'w', encoding="utf-8") as fp:
+        with open(os.path.join(path, str(data['curentfilename']) + '.xml'), 'w', encoding="utf-8") as fp:
             fp.write(str(data))
 
+        # send json response to front
         return JsonResponse(data)
 
 
 class DownloadFile(View):
     def get(self, request):
-        path_and_filname = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + f"\\static\\pic\\data.xml"
+        path_and_filname = os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))) + f"\\static\\pic\\{str(request.session['curentfilenamekey'])}.xml"
+
         if os.path.exists(path_and_filname):
             myFileForRead = open(path_and_filname, 'rb')
             response = FileResponse(myFileForRead)
@@ -38,4 +48,4 @@ class DownloadFile(View):
             response['Content-Disposition'] = f"Attachment;filename={os.path.basename(path_and_filname)}"
             return response
         else:
-            return HttpResponseNotFound(f"Файл отсутствует!!!")
+            return HttpResponseNotFound("File not founded...")
