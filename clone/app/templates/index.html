@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="div" id="form-wrapper">
+  <div class="div">
     <div class="container col text-center">
-      <form id="comment-form" enctype="multipart/form-data" action="{% url 'downloadfile' %}" method="POST">{% csrf_token %}
-        <button type="submit" class="btn btn-lg btn-success">Download file</button>
-      </form >
+
+      <button id="btn-add-file" type="button" class="btn btn-lg btn-success">Add file</button>
+      <a href="{% url 'downloadfinalfile' %}"><button id="btn-download-file" type="button" class="btn btn-lg btn-success">Download file</button></a>
+
     </div>
   </div>
-  <script type="text/javascript" src="{% static 'js/send_data_to_djangoBackend_working.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js\myajaxscript.js' %}"></script>
 </body>
 </html>
