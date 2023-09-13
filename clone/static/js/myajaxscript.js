@@ -100,12 +100,22 @@ document.addEventListener("DOMContentLoaded", function(e){
       contentType: 'application/json',
       success: function(response) {
         console.log(response);
-        window.location.href = "http://127.0.0.1:8000/downloadfinalfile/"
+
+        window.location.href = "/downloadfinalfile/"
         console.log("File downloaded!!!")
 
+        // setTimeout(function(response) {
+        //   window.location.href = "/deletefinalfile/"
+        //   console.log("File deleted!!!")
+        // }, 3000) 
         
       }
     });
+
+
+
+
+
 
 
 

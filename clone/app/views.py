@@ -4,6 +4,7 @@ import time
 
 from django.views import View
 from django.http import HttpResponseNotFound, FileResponse, JsonResponse, HttpResponse
+from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.shortcuts import render
@@ -28,7 +29,7 @@ class AddFile(View):
         request.session['curentfilenamekey'] = str(data['curentfilename'])
 
         # save data to xml file
-        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + f"\\static\\pic\\"
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + f"/static/pic/"
         with open(os.path.join(path, str(data['curentfilename']) + '.xml'), 'w', encoding="utf-8") as fp:
             fp.write(str(data['somedata']))
 
@@ -39,7 +40,7 @@ class AddFile(View):
 class DownloadFile(View):
     def get(self, request):
         path_and_filname = os.path.dirname(os.path.dirname(
-            os.path.abspath(__file__))) + f"\\static\\pic\\{str(request.session['curentfilenamekey'])}.xml"
+            os.path.abspath(__file__))) + f"/static/pic/{str(request.session['curentfilenamekey'])}.xml"
 
         if os.path.exists(path_and_filname):
             myFileForRead = open(path_and_filname, 'rb')
@@ -51,13 +52,15 @@ class DownloadFile(View):
 
         else:
             return HttpResponseNotFound("File not founded...")
-
+### Не стал создавать контроллер на удаление файла после отдачи его клиенту, решил сделать отдельный cron-скрипт
+### который будет очищать статическую папку с файлами
 
 def deleteDownloadedFile(request):
     if request.method == 'GET':
         data = {}
         path_and_filname = os.path.dirname(os.path.dirname(
-            os.path.abspath(__file__))) + f"\\static\\pic\\{str(request.session['curentfilenamekey'])}.xml"
+            os.path.abspath(__file__))) + f"/static/pic/{str(request.session['curentfilenamekey'])}.xml"
         if os.path.exists(path_and_filname):
             os.remove(path_and_filname)
         return JsonResponse(data)
+
