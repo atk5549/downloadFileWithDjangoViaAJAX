@@ -81,10 +81,15 @@ document.addEventListener("DOMContentLoaded", function(e){
 
 
     
+    var anydata = {
+      "firstNames": ['Вася', 'Саня', 'Серега'],
+      "MiddleNames": ['Вася', 'Саня', 'Серега'],
+      "LastNames": ['Вася', 'Саня', 'Серега'],
+    }
 
     
 
-    var data = JSON.stringify({name: 'John', age: 25, 'curentfilename': curentfilenameuuid});
+    var data = JSON.stringify({'somedata': anydata, 'curentfilename': curentfilenameuuid});
 
     $.ajax({
 
@@ -95,10 +100,31 @@ document.addEventListener("DOMContentLoaded", function(e){
       contentType: 'application/json',
       success: function(response) {
         console.log(response);
+        window.location.href = "http://127.0.0.1:8000/downloadfinalfile/"
+        console.log("File downloaded!!!")
+
+        
       }
     });
+
+
+
+    
+
+    
+    
+
+
+
   });
 
+  // $.ajax({
+  //   url: "/deletefinalfile/",
+  //   method: 'GET',
+  //   success: function(response) {
+  //     window.location.href = "http://127.0.0.1:8000/deletefinalfile/"
+  //   }
+  // });
 
 
 
